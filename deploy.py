@@ -4,7 +4,7 @@ import mysql.connector
 from mysql.connector import Error
 from dotenv import load_dotenv
 
-app = Flask(__name__)
+deploy = Flask(__name__)
 # Carrega as variáveis de ambiente do arquivo .cred (se disponível)
 load_dotenv('.cred')
 
@@ -35,12 +35,12 @@ def connect_db():
 
 
 
-@app.route('/', methods=['GET'])
+@deploy.route('/', methods=['GET'])
 def index():
     return {"status": "API em execução"}, 200
 
 
-@app.route('/aluno', methods=['GET'])
+@deploy.route('/aluno', methods=['GET'])
 def get_alunos():
 
     # conectar colm a base
@@ -74,7 +74,7 @@ def get_alunos():
         return resp, 200
 
 
-@app.route("/aluno", methods=["POST"])
+@deploy.route("/aluno", methods=["POST"])
 def cadastrar_aluno():
     success = False
 
@@ -98,7 +98,7 @@ def cadastrar_aluno():
     if conn.is_connected():
         try:
             cursor = conn.cursor()  # Cria um cursor para executar comandos SQL
-            sql = "INSERT INTO tbl_alunos (nome, cpf, idade) VALUES (%s, %s, %i)"  # Comando SQL para inserir um aluno
+            sql = "INSERT INTO tbl_alunos (nome, cpf, idade) VALUES (%s, %s, %s)"  # Comando SQL para inserir um aluno
             values = (nome, cpf, idade)  # Dados a serem inseridos
 
             # Executa o comando SQL com os valores fornecidos
@@ -165,4 +165,4 @@ def cadastrar_aluno():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    deploy.run(debug=True)
